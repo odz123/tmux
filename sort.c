@@ -65,10 +65,16 @@ sort_buffer_cmp(const void *a0, const void *b0)
 		result = strcmp(pa->name, pb->name);
 		break;
 	case SORT_CREATION:
-		result = pa->order - pb->order;
+		if (pa->order > pb->order)
+			result = 1;
+		else if (pa->order < pb->order)
+			result = -1;
 		break;
 	case SORT_SIZE:
-		result = pa->size - pb->size;
+		if (pa->size > pb->size)
+			result = 1;
+		else if (pa->size < pb->size)
+			result = -1;
 		break;
 	case SORT_ACTIVITY:
 	case SORT_INDEX:
@@ -100,9 +106,16 @@ sort_client_cmp(const void *a0, const void *b0)
 		result = strcmp(ca->name, cb->name);
 		break;
 	case SORT_SIZE:
-		result = ca->tty.sx - cb->tty.sx;
-		if (result == 0)
-			result = ca->tty.sy - cb->tty.sy;
+		if (ca->tty.sx > cb->tty.sx)
+			result = 1;
+		else if (ca->tty.sx < cb->tty.sx)
+			result = -1;
+		if (result == 0) {
+			if (ca->tty.sy > cb->tty.sy)
+				result = 1;
+			else if (ca->tty.sy < cb->tty.sy)
+				result = -1;
+		}
 		break;
 	case SORT_CREATION:
 		if (timercmp(&ca->creation_time, &cb->creation_time, >))
@@ -142,7 +155,10 @@ sort_session_cmp(const void *a0, const void *b0)
 
 	switch (sort_crit->order) {
 	case SORT_INDEX:
-		result = sa->id - sb->id;
+		if (sa->id > sb->id)
+			result = 1;
+		else if (sa->id < sb->id)
+			result = -1;
 		break;
 	case SORT_CREATION:
 		if (timercmp(&sa->creation_time, &sb->creation_time, >)) {
@@ -188,22 +204,36 @@ sort_pane_cmp(const void *a0, const void *b0)
 	struct window_pane	*a = *(struct window_pane **)a0;
 	struct window_pane	*b = *(struct window_pane **)b0;
 	int			 result = 0;
-	u_int			 ai, bi;
+	u_int			 ai, bi, area_a, area_b;
 
 	switch (sort_crit->order) {
 	case SORT_ACTIVITY:
-		result = a->active_point - b->active_point;
+		if (a->active_point > b->active_point)
+			result = 1;
+		else if (a->active_point < b->active_point)
+			result = -1;
 		break;
 	case SORT_CREATION:
-		result = a->id - b->id;
+		if (a->id > b->id)
+			result = 1;
+		else if (a->id < b->id)
+			result = -1;
 		break;
 	case SORT_SIZE:
-		result = a->sx * a->sy - b->sx * b->sy;
+		area_a = a->sx * a->sy;
+		area_b = b->sx * b->sy;
+		if (area_a > area_b)
+			result = 1;
+		else if (area_a < area_b)
+			result = -1;
 		break;
 	case SORT_INDEX:
 		window_pane_index(a, &ai);
 		window_pane_index(b, &bi);
-		result = ai - bi;
+		if (ai > bi)
+			result = 1;
+		else if (ai < bi)
+			result = -1;
 		break;
 	case SORT_NAME:
 		result = strcmp(a->screen->title, b->screen->title);
@@ -232,6 +262,7 @@ sort_winlink_cmp(const void *a0, const void *b0)
 	struct window			*wa = wla->window;
 	struct window			*wb = wlb->window;
 	int				 result = 0;
+	u_int				 area_a, area_b;
 
 	switch (sort_crit->order) {
 	case SORT_INDEX:
@@ -239,11 +270,11 @@ sort_winlink_cmp(const void *a0, const void *b0)
 		break;
 	case SORT_CREATION:
 		if (timercmp(&wa->creation_time, &wb->creation_time, >)) {
-			result = -1;
+			result = 1;
 			break;
 		}
 		if (timercmp(&wa->creation_time, &wb->creation_time, <)) {
-			result = 1;
+			result = -1;
 			break;
 		}
 		break;
@@ -261,7 +292,12 @@ sort_winlink_cmp(const void *a0, const void *b0)
 		result = strcmp(wa->name, wb->name);
 		break;
 	case SORT_SIZE:
-		result = wa->sx * wa->sy - wb->sx * wb->sy;
+		area_a = wa->sx * wa->sy;
+		area_b = wb->sx * wb->sy;
+		if (area_a > area_b)
+			result = 1;
+		else if (area_a < area_b)
+			result = -1;
 		break;
 	case SORT_ORDER:
 	case SORT_END:
@@ -460,6 +496,7 @@ sort_get_panes_session(struct session *s, u_int *n,
 
 	i = 0;
 	RB_FOREACH(wl, winlinks, &s->windows)  {
+		w = wl->window;
 		TAILQ_FOREACH(wp, &w->panes, entry) {
 			if (lsz <= i) {
 				lsz += 100;
