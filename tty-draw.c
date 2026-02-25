@@ -134,6 +134,8 @@ tty_draw_line(struct tty *tty, struct screen *s, u_int px, u_int py, u_int nx,
 	 * Clamp the width to cellsize - note this is not cellused, because
 	 * there may be empty background cells after it (from BCE).
 	 */
+	if (nx > screen_size_x(s))
+		nx = screen_size_x(s);
 	cellsize = grid_get_line(gd, gd->hsize + py)->cellsize;
 	if (screen_size_x(s) > cellsize)
 		ex = cellsize;
@@ -144,8 +146,6 @@ tty_draw_line(struct tty *tty, struct screen *s, u_int px, u_int py, u_int nx,
 		if (px + nx > ex)
 			nx = ex - px;
 	}
-	if (ex < nx)
-		ex = nx;
 	log_debug("%s: drawing %u-%u,%u (end %u) at %u,%u; defaults: fg=%d, "
 	    "bg=%d", __func__, px, px + nx, py, ex, atx, aty, defaults->fg,
 	    defaults->bg);
@@ -181,7 +181,7 @@ tty_draw_line(struct tty *tty, struct screen *s, u_int px, u_int py, u_int nx,
 		tty_attributes(tty, &last, defaults, palette, s->hyperlinks);
 		log_debug("%s: clearing %u padding cells", __func__, cx);
 		tty_draw_line_clear(tty, atx, aty, cx, defaults, bg, 0);
-		if (cx == ex)
+		if (cx >= nx)
 			return;
 		atx += cx;
 		px += cx;
