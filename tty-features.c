@@ -545,12 +545,13 @@ tty_default_features(int *feat, const char *name, u_int version)
 		  /*
 		   * Apple Terminal.app. Does not support synchronized
 		   * updates, cursor colour/style, extended keys, focus
-		   * reporting, OSC 7, overline, or underscore styles.
-		   * True colour (RGB) added in macOS Tahoe (macOS 26);
-		   * OSC 8 hyperlinks added in macOS Sequoia.
+		   * reporting, overline, strikethrough, or underscore
+		   * styles. True colour (RGB) added in macOS Tahoe
+		   * (macOS 26); OSC 8 hyperlinks added in macOS Sequoia.
+		   * OSC 7 working directory is supported (Terminal.app
+		   * originated the convention).
 		   */
-		  .features = "256,bpaste,hyperlinks,mouse,strikethrough,"
-			      "title"
+		  .features = "256,bpaste,hyperlinks,mouse,osc7,title"
 		}
 	};
 	u_int	i;

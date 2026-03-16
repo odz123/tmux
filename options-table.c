@@ -540,7 +540,7 @@ const struct options_table_entry options_table[] = {
 			 "contour*:clipboard:ccolour:cstyle:focus:overline:"
 			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
 			 "st*:clipboard:cstyle:title:RGB,"
-			 "nsterm*:bpaste:hyperlinks:mouse:strikethrough:title",
+			 "nsterm*:bpaste:hyperlinks:mouse:osc7:title",
 	  .separator = ",",
 	  .text = "List of terminal features, used if they cannot be "
 		  "automatically detected."
