@@ -13,6 +13,13 @@ CHANGES FROM 3.6 TO 3.6a
   colour and feature support (including AI CLI tools) now work correctly
   without manual configuration.
 
+* Increase default history-limit from 2000 to 50000 lines. Modern TUI
+  applications such as AI coding assistants can generate thousands of
+  scroll events per second, quickly exhausting the previous default.
+
+* Enable focus-events by default. Focus reporting is required by many
+  modern TUI applications for proper rendering and state management.
+
 * Fix a buffer overread and an infinite loop in format processing (reported by
   Giorgi Kobakhia, issue 4735).
 

@@ -404,7 +404,7 @@ const struct options_table_entry options_table[] = {
 	{ .name = "focus-events",
 	  .type = OPTIONS_TABLE_FLAG,
 	  .scope = OPTIONS_TABLE_SERVER,
-	  .default_num = 0,
+	  .default_num = 1,
 	  .text = "Whether to send focus events to applications."
 	},
 
@@ -685,7 +685,7 @@ const struct options_table_entry options_table[] = {
 	  .scope = OPTIONS_TABLE_SESSION,
 	  .minimum = 0,
 	  .maximum = INT_MAX,
-	  .default_num = 2000,
+	  .default_num = 50000,
 	  .unit = "lines",
 	  .text = "Maximum number of lines to keep in the history for each "
 		  "pane. "
