@@ -540,6 +540,17 @@ tty_default_features(int *feat, const char *name, u_int version)
 		{ .name = "rio",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
 			      ",cstyle,extkeys,focus,osc7,hyperlinks"
+		},
+		{ .name = "Apple",
+		  /*
+		   * Apple Terminal.app. Does not support synchronized
+		   * updates, cursor colour/style, extended keys, focus
+		   * reporting, OSC 7, overline, or underscore styles.
+		   * True colour (RGB) added in macOS Tahoe (macOS 26);
+		   * OSC 8 hyperlinks added in macOS Sequoia.
+		   */
+		  .features = "256,bpaste,hyperlinks,mouse,strikethrough,"
+			      "title"
 		}
 	};
 	u_int	i;

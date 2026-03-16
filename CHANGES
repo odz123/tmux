@@ -6,8 +6,10 @@ CHANGES FROM 3.6 TO 3.6a
   for each. Add XTVERSION auto-detection for all of these terminals so
   features are applied automatically without manual configuration.
 
-* Add default terminal-features for st (suckless terminal) and contour
-  via TERM-based matching.
+* Add default terminal-features for st (suckless terminal), contour,
+  and Apple Terminal.app (nsterm) via TERM-based matching. Terminal.app
+  users should set TERM to nsterm-256color in Terminal preferences for
+  accurate feature detection.
 
 * Add synchronized updates (sync) to the default terminal-features for xterm,
   tmux, and foot terminal types to reduce flicker in rich TUI applications
