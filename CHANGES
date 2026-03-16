@@ -1,5 +1,32 @@
 CHANGES FROM 3.6 TO 3.6a
 
+* Add default terminal feature detection for alacritty, kitty, ghostty,
+  wezterm, contour, Konsole, rio, and VTE-based terminals (GNOME Terminal,
+  Tilix, Terminator, xfce4-terminal, etc.) with appropriate feature sets
+  for each. Add XTVERSION auto-detection for all of these terminals so
+  features are applied automatically without manual configuration.
+
+* Add default terminal-features for st (suckless terminal), contour,
+  and Apple Terminal.app (nsterm) via TERM-based matching. Terminal.app
+  users should set TERM to nsterm-256color in Terminal preferences for
+  accurate feature detection.
+
+* Add synchronized updates (sync) to the default terminal-features for xterm,
+  tmux, and foot terminal types to reduce flicker in rich TUI applications
+  such as AI coding assistants (Claude CLI, Codex CLI, Gemini CLI).
+
+* Change TMUX_TERM default from "screen" to "tmux-256color" to properly
+  advertise terminal capabilities. Applications that rely on TERM to detect
+  colour and feature support (including AI CLI tools) now work correctly
+  without manual configuration.
+
+* Increase default history-limit from 2000 to 50000 lines. Modern TUI
+  applications such as AI coding assistants can generate thousands of
+  scroll events per second, quickly exhausting the previous default.
+
+* Enable focus-events by default. Focus reporting is required by many
+  modern TUI applications for proper rendering and state management.
+
 * Fix a buffer overread and an infinite loop in format processing (reported by
   Giorgi Kobakhia, issue 4735).
 

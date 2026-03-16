@@ -404,7 +404,7 @@ const struct options_table_entry options_table[] = {
 	{ .name = "focus-events",
 	  .type = OPTIONS_TABLE_FLAG,
 	  .scope = OPTIONS_TABLE_SERVER,
-	  .default_num = 0,
+	  .default_num = 1,
 	  .text = "Whether to send focus events to applications."
 	},
 
@@ -525,9 +525,22 @@ const struct options_table_entry options_table[] = {
 	  .type = OPTIONS_TABLE_STRING,
 	  .scope = OPTIONS_TABLE_SERVER,
 	  .flags = OPTIONS_TABLE_IS_ARRAY,
-	  .default_str = "xterm*:clipboard:ccolour:cstyle:focus:title,"
+	  .default_str = "xterm*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks,"
 			 "screen*:title,"
-			 "rxvt*:ignorefkeys",
+			 "rxvt*:ignorefkeys,"
+			 "alacritty*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "kitty*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "ghostty*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "wezterm*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "contour*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "st*:clipboard:cstyle:title:RGB,"
+			 "nsterm*:bpaste:hyperlinks:mouse:osc7:title",
 	  .separator = ",",
 	  .text = "List of terminal features, used if they cannot be "
 		  "automatically detected."
@@ -676,7 +689,7 @@ const struct options_table_entry options_table[] = {
 	  .scope = OPTIONS_TABLE_SESSION,
 	  .minimum = 0,
 	  .maximum = INT_MAX,
-	  .default_num = 2000,
+	  .default_num = 50000,
 	  .unit = "lines",
 	  .text = "Maximum number of lines to keep in the history for each "
 		  "pane. "

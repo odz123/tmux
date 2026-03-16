@@ -479,7 +479,8 @@ tty_default_features(int *feat, const char *name, u_int version)
 		},
 		{ .name = "tmux",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-			      ",ccolour,cstyle,focus,overline,usstyle,hyperlinks"
+			      ",ccolour,cstyle,focus,overline,sync,usstyle,"
+			      "hyperlinks"
 		},
 		{ .name = "rxvt-unicode",
 		  .features = "256,bpaste,ccolour,cstyle,mouse,title,ignorefkeys"
@@ -490,7 +491,8 @@ tty_default_features(int *feat, const char *name, u_int version)
 		},
 		{ .name = "foot",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-		              ",cstyle,extkeys"
+			      ",cstyle,extkeys,focus,overline,sync,usstyle,"
+			      "hyperlinks,osc7"
 		},
 		{ .name = "XTerm",
 		  /*
@@ -500,6 +502,56 @@ tty_default_features(int *feat, const char *name, u_int version)
 		   */
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
 			      ",ccolour,cstyle,extkeys,focus"
+		},
+		{ .name = "alacritty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "kitty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "ghostty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "WezTerm",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "contour",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,margins,osc7,"
+			      "overline,rectfill,sync,usstyle,hyperlinks"
+		},
+		{ .name = "Konsole",
+		  .features = "256,RGB,bpaste,ccolour,cstyle,focus,"
+			      "hyperlinks,mouse,osc7,strikethrough,title"
+		},
+		{ .name = "VTE",
+		  .features = "256,RGB,bpaste,ccolour,cstyle,focus,"
+			      "hyperlinks,mouse,osc7,overline,strikethrough,"
+			      "title,usstyle"
+		},
+		{ .name = "rio",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",cstyle,extkeys,focus,osc7,hyperlinks"
+		},
+		{ .name = "Apple",
+		  /*
+		   * Apple Terminal.app. Does not support synchronized
+		   * updates, cursor colour/style, extended keys, focus
+		   * reporting, overline, strikethrough, or underscore
+		   * styles. True colour (RGB) added in macOS Tahoe
+		   * (macOS 26); OSC 8 hyperlinks added in macOS Sequoia.
+		   * OSC 7 working directory is supported (Terminal.app
+		   * originated the convention).
+		   */
+		  .features = "256,bpaste,hyperlinks,mouse,osc7,title"
 		}
 	};
 	u_int	i;
