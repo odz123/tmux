@@ -90,7 +90,7 @@ struct winlink;
 #define TMUX_SOCK_PERM (7 /* o+rwx */)
 #endif
 #ifndef TMUX_TERM
-#define TMUX_TERM "screen"
+#define TMUX_TERM "tmux-256color"
 #endif
 #ifndef TMUX_LOCK_CMD
 #define TMUX_LOCK_CMD "lock -np"

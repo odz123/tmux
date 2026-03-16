@@ -1,5 +1,18 @@
 CHANGES FROM 3.6 TO 3.6a
 
+* Add default terminal feature detection for alacritty, kitty, ghostty, and
+  wezterm terminals with full support for RGB colour, synchronized updates,
+  styled underlines, overline, strikethrough, and hyperlinks.
+
+* Add synchronized updates (sync) to the default terminal-features for xterm,
+  tmux, and foot terminal types to reduce flicker in rich TUI applications
+  such as AI coding assistants (Claude CLI, Codex CLI, Gemini CLI).
+
+* Change TMUX_TERM default from "screen" to "tmux-256color" to properly
+  advertise terminal capabilities. Applications that rely on TERM to detect
+  colour and feature support (including AI CLI tools) now work correctly
+  without manual configuration.
+
 * Fix a buffer overread and an infinite loop in format processing (reported by
   Giorgi Kobakhia, issue 4735).
 

@@ -479,7 +479,8 @@ tty_default_features(int *feat, const char *name, u_int version)
 		},
 		{ .name = "tmux",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-			      ",ccolour,cstyle,focus,overline,usstyle,hyperlinks"
+			      ",ccolour,cstyle,focus,overline,sync,usstyle,"
+			      "hyperlinks"
 		},
 		{ .name = "rxvt-unicode",
 		  .features = "256,bpaste,ccolour,cstyle,mouse,title,ignorefkeys"
@@ -490,7 +491,8 @@ tty_default_features(int *feat, const char *name, u_int version)
 		},
 		{ .name = "foot",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-		              ",cstyle,extkeys"
+			      ",cstyle,extkeys,focus,overline,sync,usstyle,"
+			      "hyperlinks,osc7"
 		},
 		{ .name = "XTerm",
 		  /*
@@ -500,6 +502,26 @@ tty_default_features(int *feat, const char *name, u_int version)
 		   */
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
 			      ",ccolour,cstyle,extkeys,focus"
+		},
+		{ .name = "alacritty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",cstyle,extkeys,focus,osc7,overline,sync,"
+			      "usstyle,hyperlinks"
+		},
+		{ .name = "kitty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",cstyle,extkeys,focus,osc7,overline,sync,"
+			      "usstyle,hyperlinks"
+		},
+		{ .name = "ghostty",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "WezTerm",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
 		}
 	};
 	u_int	i;
