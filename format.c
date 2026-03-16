@@ -534,7 +534,7 @@ format_cb_session_attached_list(struct format_tree *ft)
 	struct session	*s = ft->s;
 	struct client	*loop;
 	struct evbuffer	*buffer;
-	int		 size;
+	size_t		 size;
 	char		*value = NULL;
 
 	if (s == NULL)
@@ -553,7 +553,7 @@ format_cb_session_attached_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -689,7 +689,7 @@ format_cb_window_linked_sessions_list(struct format_tree *ft)
 	struct window	*w;
 	struct winlink	*wl;
 	struct evbuffer	*buffer;
-	int		 size;
+	size_t		 size;
 	char		*value = NULL;
 
 	if (ft->wl == NULL)
@@ -707,7 +707,7 @@ format_cb_window_linked_sessions_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -741,7 +741,7 @@ format_cb_window_active_sessions_list(struct format_tree *ft)
 	struct window	*w;
 	struct winlink	*wl;
 	struct evbuffer	*buffer;
-	int		 size;
+	size_t		 size;
 	char		*value = NULL;
 
 	if (ft->wl == NULL)
@@ -761,7 +761,7 @@ format_cb_window_active_sessions_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -801,7 +801,7 @@ format_cb_window_active_clients_list(struct format_tree *ft)
 	struct client	*loop;
 	struct session	*client_session;
 	struct evbuffer	*buffer;
-	int		 size;
+	size_t		 size;
 	char		*value = NULL;
 
 	if (ft->wl == NULL)
@@ -825,7 +825,7 @@ format_cb_window_active_clients_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -982,7 +982,7 @@ format_cb_pane_tabs(struct format_tree *ft)
 	struct window_pane	*wp = ft->wp;
 	struct evbuffer		*buffer;
 	u_int			 i;
-	int			 size;
+	size_t			 size;
 	char			*value = NULL;
 
 	if (wp == NULL)
@@ -1000,7 +1000,7 @@ format_cb_pane_tabs(struct format_tree *ft)
 		evbuffer_add_printf(buffer, "%u", i);
 	}
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -1041,7 +1041,7 @@ format_cb_session_group_list(struct format_tree *ft)
 	struct session_group	*sg;
 	struct session		*loop;
 	struct evbuffer		*buffer;
-	int			 size;
+	size_t			 size;
 	char			*value = NULL;
 
 	if (s == NULL)
@@ -1061,7 +1061,7 @@ format_cb_session_group_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
@@ -1074,7 +1074,7 @@ format_cb_session_group_attached_list(struct format_tree *ft)
 	struct session_group	*sg;
 	struct client		*loop;
 	struct evbuffer		*buffer;
-	int			 size;
+	size_t			 size;
 	char			*value = NULL;
 
 	if (s == NULL)
@@ -1101,7 +1101,7 @@ format_cb_session_group_attached_list(struct format_tree *ft)
 	}
 
 	if ((size = EVBUFFER_LENGTH(buffer)) != 0)
-		xasprintf(&value, "%.*s", size, EVBUFFER_DATA(buffer));
+		xasprintf(&value, "%.*s", (int)size, EVBUFFER_DATA(buffer));
 	evbuffer_free(buffer);
 	return (value);
 }
