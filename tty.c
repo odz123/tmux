@@ -82,7 +82,7 @@ static void	tty_write_one(void (*)(struct tty *, const struct tty_ctx *),
 #define TTY_BLOCK_STOP(tty) (1 + ((tty)->sx * (tty)->sy) / 8)
 
 #define TTY_QUERY_TIMEOUT 5
-#define TTY_REQUEST_LIMIT 30
+#define TTY_REQUEST_LIMIT 128
 
 void
 tty_create_log(void)

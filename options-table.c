@@ -286,7 +286,7 @@ const struct options_table_entry options_table[] = {
 	  .scope = OPTIONS_TABLE_SERVER,
 	  .minimum = 1,
 	  .maximum = INT_MAX,
-	  .default_num = 50,
+	  .default_num = 256,
 	  .text = "The maximum number of automatic buffers. "
 		  "When this is reached, the oldest buffer is deleted."
 	},
@@ -672,7 +672,7 @@ const struct options_table_entry options_table[] = {
 	  .scope = OPTIONS_TABLE_SESSION,
 	  .minimum = 0,
 	  .maximum = INT_MAX,
-	  .default_num = 750,
+	  .default_num = 2000,
 	  .unit = "milliseconds",
 	  .text = "Time for which status line messages should appear."
 	},

@@ -307,7 +307,7 @@ struct window_copy_mode_data {
 	int		 timeout;	/* search has timed out */
 #define WINDOW_COPY_SEARCH_TIMEOUT 10000
 #define WINDOW_COPY_SEARCH_ALL_TIMEOUT 200
-#define WINDOW_COPY_SEARCH_MAX_LINE 2000
+#define WINDOW_COPY_SEARCH_MAX_LINE 10000
 
 	int			 jumptype;
 	struct utf8_data	*jumpchar;

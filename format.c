@@ -109,7 +109,7 @@ format_job_cmp(struct format_job *fj1, struct format_job *fj2)
 #define FORMAT_REPEAT 0x200000
 
 /* Limit on recursion. */
-#define FORMAT_LOOP_LIMIT 100
+#define FORMAT_LOOP_LIMIT 1000
 
 /* Format expand flags. */
 #define FORMAT_EXPAND_TIME 0x1
@@ -564,7 +564,7 @@ format_cb_session_alert(struct format_tree *ft)
 {
 	struct session	*s = ft->s;
 	struct winlink	*wl;
-	char		 alerts[1024];
+	char		 alerts[8];
 	int		 alerted = 0;
 
 	if (s == NULL)
@@ -596,28 +596,36 @@ format_cb_session_alerts(struct format_tree *ft)
 {
 	struct session	*s = ft->s;
 	struct winlink	*wl;
-	char		 alerts[1024], tmp[16];
+	char		*alerts, tmp[16];
+	size_t		 alertsz, alertlen;
 
 	if (s == NULL)
 		return (NULL);
 
+	alertsz = 256;
+	alerts = xmalloc(alertsz);
 	*alerts = '\0';
+	alertlen = 0;
 	RB_FOREACH(wl, winlinks, &s->windows) {
 		if ((wl->flags & WINLINK_ALERTFLAGS) == 0)
 			continue;
 		xsnprintf(tmp, sizeof tmp, "%u", wl->idx);
 
+		while (alertlen + strlen(tmp) + 4 >= alertsz) {
+			alertsz *= 2;
+			alerts = xrealloc(alerts, alertsz);
+		}
 		if (*alerts != '\0')
-			strlcat(alerts, ",", sizeof alerts);
-		strlcat(alerts, tmp, sizeof alerts);
+			alertlen = strlcat(alerts, ",", alertsz);
+		alertlen = strlcat(alerts, tmp, alertsz);
 		if (wl->flags & WINLINK_ACTIVITY)
-			strlcat(alerts, "#", sizeof alerts);
+			alertlen = strlcat(alerts, "#", alertsz);
 		if (wl->flags & WINLINK_BELL)
-			strlcat(alerts, "!", sizeof alerts);
+			alertlen = strlcat(alerts, "!", alertsz);
 		if (wl->flags & WINLINK_SILENCE)
-			strlcat(alerts, "~", sizeof alerts);
+			alertlen = strlcat(alerts, "~", alertsz);
 	}
-	return (xstrdup(alerts));
+	return (alerts);
 }
 
 /* Callback for session_stack. */
@@ -626,20 +634,27 @@ format_cb_session_stack(struct format_tree *ft)
 {
 	struct session	*s = ft->s;
 	struct winlink	*wl;
-	char		 result[1024], tmp[16];
+	char		*result, tmp[16];
+	size_t		 resultsz, resultlen;
 
 	if (s == NULL)
 		return (NULL);
 
-	xsnprintf(result, sizeof result, "%u", s->curw->idx);
+	resultsz = 256;
+	result = xmalloc(resultsz);
+	resultlen = xsnprintf(result, resultsz, "%u", s->curw->idx);
 	TAILQ_FOREACH(wl, &s->lastw, sentry) {
 		xsnprintf(tmp, sizeof tmp, "%u", wl->idx);
 
+		while (resultlen + strlen(tmp) + 2 >= resultsz) {
+			resultsz *= 2;
+			result = xrealloc(result, resultsz);
+		}
 		if (*result != '\0')
-			strlcat(result, ",", sizeof result);
-		strlcat(result, tmp, sizeof result);
+			resultlen = strlcat(result, ",", resultsz);
+		resultlen = strlcat(result, tmp, resultsz);
 	}
-	return (xstrdup(result));
+	return (result);
 }
 
 /* Callback for window_stack_index. */
@@ -5363,7 +5378,8 @@ format_expand1(struct format_expand_state *es, const char *fmt)
 	const char		*ptr, *s, *style_end = NULL;
 	size_t			 off, len, n, outlen;
 	int			 ch, brackets;
-	char			 expanded[8192];
+	char			*expanded = NULL;
+	size_t			 expanded_sz;
 
 	if (fmt == NULL || *fmt == '\0')
 		return (xstrdup(""));
@@ -5381,9 +5397,14 @@ format_expand1(struct format_expand_state *es, const char *fmt)
 			es->time = time(NULL);
 			localtime_r(&es->time, &es->tm);
 		}
-		if (format_strftime(expanded, sizeof expanded, fmt,
+		expanded_sz = strlen(fmt) * 8 + 1;
+		if (expanded_sz < 8192)
+			expanded_sz = 8192;
+		expanded = xmalloc(expanded_sz);
+		if (format_strftime(expanded, expanded_sz, fmt,
 		    &es->tm) == 0) {
 			format_log(es, "format is too long");
+			free(expanded);
 			return (xstrdup(""));
 		}
 		if (format_logging(ft) && strcmp(expanded, fmt) != 0)
@@ -5522,6 +5543,7 @@ format_expand1(struct format_expand_state *es, const char *fmt)
 	format_log(es, "result is: %s", buf);
 	es->loop--;
 
+	free(expanded);
 	return (buf);
 }
 

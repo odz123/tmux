@@ -23,8 +23,8 @@
 
 #include "tmux.h"
 
-#define SIXEL_WIDTH_LIMIT 10000
-#define SIXEL_HEIGHT_LIMIT 10000
+#define SIXEL_WIDTH_LIMIT 100000
+#define SIXEL_HEIGHT_LIMIT 100000
 
 struct sixel_line {
 	u_int		 x;

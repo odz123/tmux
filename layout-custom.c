@@ -60,13 +60,18 @@ layout_checksum(const char *layout)
 char *
 layout_dump(struct layout_cell *root)
 {
-	char	layout[8192], *out;
+	char	*layout, *out;
+	size_t	 len = 8192;
 
+	layout = xmalloc(len);
 	*layout = '\0';
-	if (layout_append(root, layout, sizeof layout) != 0)
+	if (layout_append(root, layout, len) != 0) {
+		free(layout);
 		return (NULL);
+	}
 
 	xasprintf(&out, "%04hx,%s", layout_checksum(layout), layout);
+	free(layout);
 	return (out);
 }
 
