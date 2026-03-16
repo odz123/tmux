@@ -505,13 +505,13 @@ tty_default_features(int *feat, const char *name, u_int version)
 		},
 		{ .name = "alacritty",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-			      ",cstyle,extkeys,focus,osc7,overline,sync,"
-			      "usstyle,hyperlinks"
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
 		},
 		{ .name = "kitty",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
-			      ",cstyle,extkeys,focus,osc7,overline,sync,"
-			      "usstyle,hyperlinks"
+			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
+			      "sync,usstyle,hyperlinks"
 		},
 		{ .name = "ghostty",
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
@@ -522,6 +522,24 @@ tty_default_features(int *feat, const char *name, u_int version)
 		  .features = TTY_FEATURES_BASE_MODERN_XTERM
 			      ",ccolour,cstyle,extkeys,focus,osc7,overline,"
 			      "sync,usstyle,hyperlinks"
+		},
+		{ .name = "contour",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",ccolour,cstyle,extkeys,focus,margins,osc7,"
+			      "overline,rectfill,sync,usstyle,hyperlinks"
+		},
+		{ .name = "Konsole",
+		  .features = "256,RGB,bpaste,ccolour,cstyle,focus,"
+			      "hyperlinks,mouse,osc7,strikethrough,title"
+		},
+		{ .name = "VTE",
+		  .features = "256,RGB,bpaste,ccolour,cstyle,focus,"
+			      "hyperlinks,mouse,osc7,overline,strikethrough,"
+			      "title,usstyle"
+		},
+		{ .name = "rio",
+		  .features = TTY_FEATURES_BASE_MODERN_XTERM
+			      ",cstyle,extkeys,focus,osc7,hyperlinks"
 		}
 	};
 	u_int	i;

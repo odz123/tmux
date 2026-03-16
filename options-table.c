@@ -529,14 +529,17 @@ const struct options_table_entry options_table[] = {
 			 "strikethrough:sync:title:usstyle:hyperlinks,"
 			 "screen*:title,"
 			 "rxvt*:ignorefkeys,"
-			 "alacritty*:clipboard:cstyle:focus:overline:"
+			 "alacritty*:clipboard:ccolour:cstyle:focus:overline:"
 			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
-			 "kitty*:clipboard:cstyle:focus:overline:"
+			 "kitty*:clipboard:ccolour:cstyle:focus:overline:"
 			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
 			 "ghostty*:clipboard:ccolour:cstyle:focus:overline:"
 			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
 			 "wezterm*:clipboard:ccolour:cstyle:focus:overline:"
-			 "strikethrough:sync:title:usstyle:hyperlinks:RGB",
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "contour*:clipboard:ccolour:cstyle:focus:overline:"
+			 "strikethrough:sync:title:usstyle:hyperlinks:RGB,"
+			 "st*:clipboard:cstyle:title:RGB",
 	  .separator = ",",
 	  .text = "List of terminal features, used if they cannot be "
 		  "automatically detected."

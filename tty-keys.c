@@ -1632,6 +1632,22 @@ tty_keys_extended_device_attributes(struct tty *tty, const char *buf,
 		tty_default_features(features, "mintty", 0);
 	else if (strncmp(tmp, "foot(", 5) == 0)
 		tty_default_features(features, "foot", 0);
+	else if (strncmp(tmp, "alacritty(", 10) == 0)
+		tty_default_features(features, "alacritty", 0);
+	else if (strncmp(tmp, "kitty(", 6) == 0)
+		tty_default_features(features, "kitty", 0);
+	else if (strncmp(tmp, "ghostty ", 8) == 0)
+		tty_default_features(features, "ghostty", 0);
+	else if (strncmp(tmp, "WezTerm ", 8) == 0)
+		tty_default_features(features, "WezTerm", 0);
+	else if (strncmp(tmp, "contour ", 8) == 0)
+		tty_default_features(features, "contour", 0);
+	else if (strncmp(tmp, "Konsole ", 8) == 0)
+		tty_default_features(features, "Konsole", 0);
+	else if (strncmp(tmp, "rio(", 4) == 0)
+		tty_default_features(features, "rio", 0);
+	else if (strncmp(tmp, "VTE(", 4) == 0)
+		tty_default_features(features, "VTE", 0);
 	log_debug("%s: received extended DA %.*s", c->name, (int)*size, buf);
 
 	free(c->term_type);

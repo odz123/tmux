@@ -1,8 +1,13 @@
 CHANGES FROM 3.6 TO 3.6a
 
-* Add default terminal feature detection for alacritty, kitty, ghostty, and
-  wezterm terminals with full support for RGB colour, synchronized updates,
-  styled underlines, overline, strikethrough, and hyperlinks.
+* Add default terminal feature detection for alacritty, kitty, ghostty,
+  wezterm, contour, Konsole, rio, and VTE-based terminals (GNOME Terminal,
+  Tilix, Terminator, xfce4-terminal, etc.) with appropriate feature sets
+  for each. Add XTVERSION auto-detection for all of these terminals so
+  features are applied automatically without manual configuration.
+
+* Add default terminal-features for st (suckless terminal) and contour
+  via TERM-based matching.
 
 * Add synchronized updates (sync) to the default terminal-features for xterm,
   tmux, and foot terminal types to reduce flicker in rich TUI applications
