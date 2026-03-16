@@ -769,6 +769,16 @@ const struct options_table_entry options_table[] = {
 		  "Applications inside panes can use the mouse even when 'off'."
 	},
 
+	{ .name = "mouse-scroll-lines",
+	  .type = OPTIONS_TABLE_NUMBER,
+	  .scope = OPTIONS_TABLE_SESSION,
+	  .minimum = 1,
+	  .maximum = 50,
+	  .default_num = 3,
+	  .text = "Number of lines to scroll per mouse wheel event. "
+		  "Scrolling rapidly will automatically accelerate."
+	},
+
 	{ .name = "prefix",
 	  .type = OPTIONS_TABLE_KEY,
 	  .scope = OPTIONS_TABLE_SESSION,
