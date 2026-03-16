@@ -1350,6 +1350,55 @@ have_event:
 			if (where == BORDER)
 				key = KEYC_WHEELDOWN_BORDER;
 		}
+
+		/* Compute velocity-based scroll lines. */
+		{
+			struct timeval	 now, diff;
+			u_int		 base, scroll_lines;
+			long long	 delta_ms;
+
+			base = options_get_number(s->options,
+			    "mouse-scroll-lines");
+			gettimeofday(&now, NULL);
+			timersub(&now, &c->tty.mouse_scroll_last, &diff);
+			delta_ms = diff.tv_sec * 1000LL +
+			    diff.tv_usec / 1000;
+
+			/*
+			 * Accumulate rapid scroll events. If less than
+			 * 80ms apart, increase count (up to a cap); if
+			 * more, decay it.
+			 */
+			if (delta_ms < 80)
+				c->tty.mouse_scroll_count++;
+			else if (delta_ms < 200)
+				c->tty.mouse_scroll_count =
+				    c->tty.mouse_scroll_count > 0 ?
+				    c->tty.mouse_scroll_count - 1 : 0;
+			else
+				c->tty.mouse_scroll_count = 0;
+
+			/* Cap the accumulator. */
+			if (c->tty.mouse_scroll_count > 10)
+				c->tty.mouse_scroll_count = 10;
+
+			/*
+			 * Compute scroll lines with acceleration: base
+			 * plus an acceleration bonus proportional to
+			 * velocity. This gives 1x at rest, up to ~4x
+			 * at full speed.
+			 */
+			scroll_lines = base +
+			    (base * c->tty.mouse_scroll_count) / 4;
+
+			m->scroll_lines = scroll_lines;
+			memcpy(&c->tty.mouse_scroll_last, &now,
+			    sizeof c->tty.mouse_scroll_last);
+			log_debug("mouse scroll: base=%u count=%u "
+			    "lines=%u delta=%lldms", base,
+			    c->tty.mouse_scroll_count, scroll_lines,
+			    delta_ms);
+		}
 		break;
 	case UP:
 		switch (MOUSE_BUTTONS(b)) {

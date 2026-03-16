@@ -1854,6 +1854,18 @@ format_cb_mouse_pane(struct format_tree *ft)
 	return (NULL);
 }
 
+/* Callback for mouse_scroll_lines. */
+static void *
+format_cb_mouse_scroll_lines(struct format_tree *ft)
+{
+	if (ft->m.valid && ft->m.scroll_lines > 0)
+		return (format_printf("%u", ft->m.scroll_lines));
+	if (ft->s != NULL)
+		return (format_printf("%d",
+		    options_get_number(ft->s->options, "mouse-scroll-lines")));
+	return (format_printf("3"));
+}
+
 /* Callback for mouse_sgr_flag. */
 static void *
 format_cb_mouse_sgr_flag(struct format_tree *ft)
@@ -3211,6 +3223,9 @@ static const struct format_table_entry format_table[] = {
 	},
 	{ "mouse_pane", FORMAT_TABLE_STRING,
 	  format_cb_mouse_pane
+	},
+	{ "mouse_scroll_lines", FORMAT_TABLE_STRING,
+	  format_cb_mouse_scroll_lines
 	},
 	{ "mouse_sgr_flag", FORMAT_TABLE_STRING,
 	  format_cb_mouse_sgr_flag

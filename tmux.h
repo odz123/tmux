@@ -1523,6 +1523,8 @@ struct mouse_event {
 
 	u_int		sgr_type;
 	u_int		sgr_b;
+
+	u_int		scroll_lines;
 };
 
 /* Key event. */
@@ -1646,6 +1648,9 @@ struct tty {
 	int		 mouse_drag_flag;
 	int		 mouse_scrolling_flag;
 	int		 mouse_slider_mpos;
+
+	struct timeval	 mouse_scroll_last;
+	u_int		 mouse_scroll_count;
 
 	void		(*mouse_drag_update)(struct client *,
 			    struct mouse_event *);
