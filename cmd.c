@@ -457,7 +457,8 @@ cmd_find(const char *name, char **cause)
 {
 	const struct cmd_entry	**loop, *entry, *found = NULL;
 	int			  ambiguous;
-	char			  s[8192];
+	char			 *s;
+	size_t			  slen, ssize;
 
 	ambiguous = 0;
 	for (loop = cmd_table; *loop != NULL; loop++) {
@@ -486,18 +487,24 @@ cmd_find(const char *name, char **cause)
 	return (found);
 
 ambiguous:
+	ssize = 256;
+	s = xmalloc(ssize);
 	*s = '\0';
+	slen = 0;
 	for (loop = cmd_table; *loop != NULL; loop++) {
 		entry = *loop;
 		if (strncmp(entry->name, name, strlen(name)) != 0)
 			continue;
-		if (strlcat(s, entry->name, sizeof s) >= sizeof s)
-			break;
-		if (strlcat(s, ", ", sizeof s) >= sizeof s)
-			break;
+		while (slen + strlen(entry->name) + 3 >= ssize) {
+			ssize *= 2;
+			s = xrealloc(s, ssize);
+		}
+		slen = strlcat(s, entry->name, ssize);
+		slen = strlcat(s, ", ", ssize);
 	}
 	s[strlen(s) - 2] = '\0';
 	xasprintf(cause, "ambiguous command: %s, could be: %s", name, s);
+	free(s);
 	return (NULL);
 }
 

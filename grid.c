@@ -146,7 +146,7 @@ grid_extended_cell(struct grid_line *gl, struct grid_cell_entry *gce,
 static void
 grid_compact_line(struct grid_line *gl)
 {
-	int			 new_extdsize = 0;
+	u_int			 new_extdsize = 0;
 	struct grid_extd_entry	*new_extddata;
 	struct grid_cell_entry	*gce;
 	struct grid_extd_entry	*gee;

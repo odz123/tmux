@@ -101,7 +101,7 @@ struct winlink;
 
 /* Minimum and maximum window size. */
 #define WINDOW_MINIMUM PANE_MINIMUM
-#define WINDOW_MAXIMUM 10000
+#define WINDOW_MAXIMUM 100000
 
 /* Automatic name refresh interval, in microseconds. Must be < 1 second. */
 #define NAME_INTERVAL 500000
@@ -119,15 +119,19 @@ struct winlink;
 #endif
 
 /* Alert option values. */
-#define ALERT_NONE 0
-#define ALERT_ANY 1
-#define ALERT_CURRENT 2
-#define ALERT_OTHER 3
+enum alert_option {
+	ALERT_NONE,
+	ALERT_ANY,
+	ALERT_CURRENT,
+	ALERT_OTHER
+};
 
 /* Visual option values. */
-#define VISUAL_OFF 0
-#define VISUAL_ON 1
-#define VISUAL_BOTH 2
+enum visual_option {
+	VISUAL_OFF,
+	VISUAL_ON,
+	VISUAL_BOTH
+};
 
 /* No key or unknown key. */
 #define KEYC_NONE            0x000ff000000000ULL
@@ -161,7 +165,7 @@ struct winlink;
 #define KEYC_MASK_KEY        0x000fffffffffffULL
 
 /* Available user keys. */
-#define KEYC_NUSER 1000
+#define KEYC_NUSER 4096
 
 /* Is this a mouse key? */
 #define KEYC_IS_MOUSE(key) \
@@ -628,8 +632,10 @@ enum tty_code_code {
 #define WHITESPACE "\t "
 
 /* Mode keys. */
-#define MODEKEY_EMACS 0
-#define MODEKEY_VI 1
+enum modekey_type {
+	MODEKEY_EMACS,
+	MODEKEY_VI
+};
 
 /* Modes. */
 #define MODE_CURSOR 0x1
@@ -763,20 +769,22 @@ struct colour_palette {
 #define GRID_STRING_EMPTY_CELLS 0x10
 
 /* Cell positions. */
-#define CELL_INSIDE 0
-#define CELL_TOPBOTTOM 1
-#define CELL_LEFTRIGHT 2
-#define CELL_TOPLEFT 3
-#define CELL_TOPRIGHT 4
-#define CELL_BOTTOMLEFT 5
-#define CELL_BOTTOMRIGHT 6
-#define CELL_TOPJOIN 7
-#define CELL_BOTTOMJOIN 8
-#define CELL_LEFTJOIN 9
-#define CELL_RIGHTJOIN 10
-#define CELL_JOIN 11
-#define CELL_OUTSIDE 12
-#define CELL_SCROLLBAR 13
+enum cell_position {
+	CELL_INSIDE,
+	CELL_TOPBOTTOM,
+	CELL_LEFTRIGHT,
+	CELL_TOPLEFT,
+	CELL_TOPRIGHT,
+	CELL_BOTTOMLEFT,
+	CELL_BOTTOMRIGHT,
+	CELL_TOPJOIN,
+	CELL_BOTTOMJOIN,
+	CELL_LEFTJOIN,
+	CELL_RIGHTJOIN,
+	CELL_JOIN,
+	CELL_OUTSIDE,
+	CELL_SCROLLBAR
+};
 
 /* Cell borders. */
 #define CELL_BORDERS " xqlkmjwvtun~"
@@ -1873,7 +1881,7 @@ struct cmd_entry {
 };
 
 /* Status line. */
-#define STATUS_LINES_LIMIT 5
+#define STATUS_LINES_LIMIT 16
 struct status_line_entry {
 	char			*expanded;
 	struct style_ranges	 ranges;

@@ -300,12 +300,15 @@ static char *
 tty_term_strip(const char *s)
 {
 	const char     *ptr;
-	static char	buf[8192];
-	size_t		len;
+	char		*buf;
+	size_t		 len, sz;
 
 	/* Ignore strings with no padding. */
 	if (strchr(s, '$') == NULL)
 		return (xstrdup(s));
+
+	sz = strlen(s) + 1;
+	buf = xmalloc(sz);
 
 	len = 0;
 	for (ptr = s; *ptr != '\0'; ptr++) {
@@ -319,22 +322,25 @@ tty_term_strip(const char *s)
 		}
 
 		buf[len++] = *ptr;
-		if (len == (sizeof buf) - 1)
+		if (len == sz - 1)
 			break;
 	}
 	buf[len] = '\0';
 
-	return (xstrdup(buf));
+	return (buf);
 }
 
 static char *
 tty_term_override_next(const char *s, size_t *offset)
 {
-	static char	value[8192];
-	size_t		n = 0, at = *offset;
+	char	*value;
+	size_t	 n = 0, at = *offset, sz;
 
 	if (s[at] == '\0')
 		return (NULL);
+
+	sz = strlen(s) - at + 1;
+	value = xmalloc(sz);
 
 	while (s[at] != '\0') {
 		if (s[at] == ':') {
@@ -347,8 +353,8 @@ tty_term_override_next(const char *s, size_t *offset)
 			value[n++] = s[at];
 			at++;
 		}
-		if (n == (sizeof value) - 1)
-			return (NULL);
+		if (n == sz - 1)
+			break;
 	}
 	if (s[at] != '\0')
 		*offset = at + 1;
@@ -370,8 +376,10 @@ tty_term_apply(struct tty_term *term, const char *capabilities, int quiet)
 	int					 n, remove;
 
 	while ((s = tty_term_override_next(capabilities, &offset)) != NULL) {
-		if (*s == '\0')
+		if (*s == '\0') {
+			free(s);
 			continue;
+		}
 		value = NULL;
 
 		remove = 0;
@@ -431,6 +439,7 @@ tty_term_apply(struct tty_term *term, const char *capabilities, int quiet)
 		}
 
 		free(value);
+		free(s);
 	}
 }
 
@@ -455,6 +464,7 @@ tty_term_apply_overrides(struct tty_term *term)
 		first = tty_term_override_next(s, &offset);
 		if (first != NULL && fnmatch(first, term->name, 0) == 0)
 			tty_term_apply(term, s + offset, 0);
+		free(first);
 		a = options_array_next(a);
 	}
 
@@ -596,6 +606,7 @@ tty_term_create(struct tty *tty, char *name, char **caps, u_int ncaps,
 		first = tty_term_override_next(s, &offset);
 		if (first != NULL && fnmatch(first, term->name, 0) == 0)
 			tty_add_features(feat, s + offset, ":");
+		free(first);
 		a = options_array_next(a);
 	}
 

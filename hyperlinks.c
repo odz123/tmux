@@ -40,7 +40,7 @@
  * the same URI (terminals will not want to tie them together).
  */
 
-#define MAX_HYPERLINKS 5000
+#define MAX_HYPERLINKS 50000
 
 static long long hyperlinks_next_external_id = 1;
 static u_int global_hyperlinks_count;

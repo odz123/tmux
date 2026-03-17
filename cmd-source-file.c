@@ -30,7 +30,7 @@
  * Sources a configuration file.
  */
 
-#define CMD_SOURCE_FILE_DEPTH_LIMIT 50
+#define CMD_SOURCE_FILE_DEPTH_LIMIT 200
 static u_int cmd_source_file_depth;
 
 static enum cmd_retval	cmd_source_file_exec(struct cmd *, struct cmdq_item *);
