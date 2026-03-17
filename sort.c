@@ -68,7 +68,10 @@ sort_buffer_cmp(const void *a0, const void *b0)
 		result = pa->order - pb->order;
 		break;
 	case SORT_SIZE:
-		result = pa->size - pb->size;
+		if (pa->size > pb->size)
+			result = 1;
+		else if (pa->size < pb->size)
+			result = -1;
 		break;
 	case SORT_ACTIVITY:
 	case SORT_INDEX:
@@ -198,7 +201,14 @@ sort_pane_cmp(const void *a0, const void *b0)
 		result = a->id - b->id;
 		break;
 	case SORT_SIZE:
-		result = a->sx * a->sy - b->sx * b->sy;
+		{
+			unsigned long long aa = (unsigned long long)a->sx * a->sy;
+			unsigned long long ba = (unsigned long long)b->sx * b->sy;
+			if (aa > ba)
+				result = 1;
+			else if (aa < ba)
+				result = -1;
+		}
 		break;
 	case SORT_INDEX:
 		window_pane_index(a, &ai);
@@ -261,7 +271,14 @@ sort_winlink_cmp(const void *a0, const void *b0)
 		result = strcmp(wa->name, wb->name);
 		break;
 	case SORT_SIZE:
-		result = wa->sx * wa->sy - wb->sx * wb->sy;
+		{
+			unsigned long long aa = (unsigned long long)wa->sx * wa->sy;
+			unsigned long long ba = (unsigned long long)wb->sx * wb->sy;
+			if (aa > ba)
+				result = 1;
+			else if (aa < ba)
+				result = -1;
+		}
 		break;
 	case SORT_ORDER:
 	case SORT_END:

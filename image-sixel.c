@@ -378,13 +378,14 @@ void
 sixel_log(struct sixel_image *si)
 {
 	struct sixel_line	*sl;
-	char			 s[SIXEL_WIDTH_LIMIT + 1];
+	char			*s;
 	u_int			 i, x, y, cx, cy;
 
 	sixel_size_in_cells(si, &cx, &cy);
 	log_debug("%s: image %ux%u (%ux%u)", __func__, si->x, si->y, cx, cy);
 	for (i = 0; i < si->ncolours; i++)
 		log_debug("%s: colour %u is %07x", __func__, i, si->colours[i]);
+	s = xmalloc(si->x + 1);
 	for (y = 0; y < si->y; y++) {
 		sl = &si->lines[y];
 		for (x = 0; x < si->x; x++) {
@@ -398,6 +399,7 @@ sixel_log(struct sixel_image *si)
 		s[x] = '\0';
 		log_debug("%s: %4u: %s", __func__, y, s);
 	}
+	free(s);
 }
 
 void
@@ -456,11 +458,13 @@ sixel_scale(struct sixel_image *si, u_int xpixel, u_int ypixel, u_int ox,
 
 	new->set_ra = si->set_ra;
 	/* subtract offset */
-	new->ra_x = new->ra_x > pox ? new->ra_x - pox : 0;
-	new->ra_y = new->ra_y > poy ? new->ra_y - poy : 0;
+	new->ra_x = si->ra_x > pox ? si->ra_x - pox : 0;
+	new->ra_y = si->ra_y > poy ? si->ra_y - poy : 0;
 	/* clamp to size */
-	new->ra_x = si->ra_x < psx ? si->ra_x : psx;
-	new->ra_y = si->ra_y < psy ? si->ra_y : psy;
+	if (new->ra_x > psx)
+		new->ra_x = psx;
+	if (new->ra_y > psy)
+		new->ra_y = psy;
 	/* resize */
 	new->ra_x = new->ra_x * xpixel / si->xpixel;
 	new->ra_y = new->ra_y * ypixel / si->ypixel;

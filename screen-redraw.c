@@ -1102,11 +1102,19 @@ screen_redraw_draw_scrollbar(struct screen_redraw_ctx *ctx,
 	slgc.bg = gc.fg;
 
 	imax = sb_w + sb_pad;
-	if ((int)imax + sb_x > sx)
-		imax = sx - sb_x;
+	if ((int)imax + sb_x > sx) {
+		if (sx > sb_x)
+			imax = sx - sb_x;
+		else
+			imax = 0;
+	}
 	jmax = sb_h;
-	if ((int)jmax + sb_y > sy)
-		jmax = sy - sb_y;
+	if ((int)jmax + sb_y > sy) {
+		if (sy > sb_y)
+			jmax = sy - sb_y;
+		else
+			jmax = 0;
+	}
 
 	for (j = 0; j < jmax; j++) {
 		py = sb_y + j;

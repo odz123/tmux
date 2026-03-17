@@ -1876,7 +1876,7 @@ format_cb_mouse_scroll_lines(struct format_tree *ft)
 	if (ft->m.valid && ft->m.scroll_lines > 0)
 		return (format_printf("%u", ft->m.scroll_lines));
 	if (ft->s != NULL)
-		return (format_printf("%d",
+		return (format_printf("%lld",
 		    options_get_number(ft->s->options, "mouse-scroll-lines")));
 	return (format_printf("3"));
 }
